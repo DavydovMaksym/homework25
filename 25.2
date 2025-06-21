@@ -1,0 +1,65 @@
+#include <iostream>
+
+class Flat
+{
+    double area;
+    double price;
+
+public:
+    Flat() : area(0), price(0) {}
+
+    Flat(double a, double p) : area(a), price(p) {}
+
+    Flat(const Flat& other)
+    {
+        area = other.area;
+        price = other.price;
+    }
+
+    Flat& operator=(const Flat& other)
+    {
+        if (this != &other)
+        {
+            area = other.area;
+            price = other.price;
+        }
+        return *this;
+    }
+
+    bool operator==(const Flat& other) const
+    {
+        return area == other.area;
+    }
+
+    bool operator>(const Flat& other) const
+    {
+        return price > other.price;
+    }
+
+    void print() const
+    {
+        std::cout << "Area: " << area << " м², Price: " << price << " ₴\n";
+    }
+};
+
+int main()
+{
+    Flat flat1(50.0, 1200000);
+    Flat flat2(50.0, 1000000);
+    Flat flat3(60.0, 1400000);
+
+    flat1.print();
+    flat2.print();
+    flat3.print();
+
+    std::cout << "\nflat1 == flat2: " << (flat1 == flat2) << "\n";
+    std::cout << "flat1 > flat2: " << (flat1 > flat2) << "\n";
+    std::cout << "flat2 > flat3: " << (flat2 > flat3) << "\n";
+
+    Flat flat4;
+    flat4 = flat3;
+    std::cout << "flat4 (after getting flat3): ";
+    flat4.print();
+
+    return 0;
+}
