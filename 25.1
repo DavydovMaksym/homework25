@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstring>
+
+class Overcoat
+{
+    char* type;
+    double price;
+
+public:
+    Overcoat() : type(nullptr), price(0.0) {}
+
+    Overcoat(const char* t, double p) : price(p)
+    {
+        type = new char[strlen(t) + 1];
+        strcpy(type, t);
+    }
+
+    Overcoat(const Overcoat& other)
+    {
+        price = other.price;
+        type = new char[strlen(other.type) + 1];
+        strcpy(type, other.type);
+    }
+
+    Overcoat& operator=(const Overcoat& other)
+    {
+        if (this != &other)
+        {
+            delete[] type;
+            price = other.price;
+            type = new char[strlen(other.type) + 1];
+            strcpy(type, other.type);
+        }
+        return *this;
+    }
+
+    bool operator==(const Overcoat& other) const
+    {
+        return strcmp(type, other.type) == 0;
+    }
+
+    bool operator>(const Overcoat& other) const
+    {
+        if (*this == other)
+        {
+            return price > other.price;
+        }
+        return false;
+    }
+
+    ~Overcoat()
+    {
+        delete[] type;
+    }
+
+    void print() const
+    {
+        std::cout << "Type: " << type << ", price: " << price << "\n";
+    }
+};
+
+int main()
+{
+    Overcoat coat1("Coat", 1500);
+    Overcoat coat2("Coat", 2000);
+    Overcoat coat3("Jacket", 1700);
+
+    coat1.print();
+    coat2.print();
+    coat3.print();
+
+    std::cout << "\ncoat1 == coat2: " << (coat1 == coat2) << "\n";
+    std::cout << "coat1 > coat2: " << (coat1 > coat2) << "\n";
+    std::cout << "coat2 > coat1: " << (coat2 > coat1) << "\n";
+    std::cout << "coat1 == coat3: " << (coat1 == coat3) << "\n";
+
+    Overcoat coat4;
+    coat4 = coat2;
+    std::cout << "coat4 (after getting coat2): ";
+    coat4.print();
+
+    return 0;
+}
